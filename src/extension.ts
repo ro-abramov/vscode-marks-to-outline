@@ -1,14 +1,6 @@
 import * as vscode from "vscode";
 
-function findMarks(text: string): [string, number] | null {
-  const match = text.match(/MARK: -(.+)/);
-  if (match) {
-    const [, name] = match;
-    return [name, (match.index ?? 0) + 6];
-  }
-  return null;
-}
-
+//#region MARK: -Interfaces
 interface MarkTokens {
   text: string;
   line: number;
@@ -17,6 +9,16 @@ interface MarkTokens {
 
 interface MakeSymbolFn extends MarkTokens {
   document: vscode.TextDocument;
+}
+//#endregion
+
+function findMarks(text: string): [string, number] | null {
+  const match = text.match(/MARK: -(.+)/);
+  if (match) {
+    const [, name] = match;
+    return [name.trim(), (match.index ?? 0) + 6];
+  }
+  return null;
 }
 
 function makeSymbol(cfg: MakeSymbolFn): vscode.SymbolInformation {
@@ -56,8 +58,9 @@ const symbolProvider = {
   },
 };
 
+const SUPPORTED_LANGUAGES = ["typescript", "javascript", "typescriptreact", "javascriptreact"];
 export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.languages.registerDocumentSymbolProvider(["typescript", "javascript"], symbolProvider, {
+  let disposable = vscode.languages.registerDocumentSymbolProvider(SUPPORTED_LANGUAGES, symbolProvider, {
     label: "MARKS",
   });
   context.subscriptions.push(disposable);

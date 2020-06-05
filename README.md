@@ -24,7 +24,12 @@ Just add `MARK: -` to your one line comment.
 
 ## Recommendation
 
-## Versions history
+## Changelogs
+
+### 0.0.2
+
+Add support for react in js and ts.
+Remove trailing white spaces for comments.
 
 ### 0.0.1
 

@@ -2,7 +2,12 @@
   "name": "marks-to-outline",
   "displayName": "Marks to outline",
   "description": "Adds MARKS symbols to outline view",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "publisher": "roabramov",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snak1t/vscode-marks-to-outline"
+  },
   "engines": {
     "vscode": "^1.45.0"
   },
