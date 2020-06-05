@@ -24,7 +24,7 @@ function makeSymbol(cfg: MakeSymbolFn): vscode.SymbolInformation {
   return new vscode.SymbolInformation(cfg.text, vscode.SymbolKind.Key, "", locationUri);
 }
 
-export function getSymbolForLine(document: vscode.TextDocument, line: number): MarkTokens | undefined {
+export function checkLineForMarkTokens(document: vscode.TextDocument, line: number): MarkTokens | undefined {
   const { text } = document.lineAt(line);
   const match = findMarks(text);
   if (match && match[0] !== "") {
@@ -46,7 +46,7 @@ const symbolProvider = {
     const lineCount = document.lineCount;
     let result: MarkTokens[] = [];
     for (let line = 0; line < lineCount; line++) {
-      const symbol = getSymbolForLine(document, line);
+      const symbol = checkLineForMarkTokens(document, line);
       if (symbol) {
         result.push(symbol);
       }
