@@ -12,8 +12,14 @@ interface MakeSymbolFn extends MarkTokens {
 }
 //#endregion
 
+const getMarkKeyWord = (): string =>
+  (vscode.workspace.getConfiguration("marksToOutline").get("mark") as string) ?? "MARK: -";
+
+let MARK_KEYWORD = getMarkKeyWord();
+
 function findMarks(text: string): [string, number] | null {
-  const match = text.match(/MARK: -(.+)/);
+  const r = new RegExp(`${MARK_KEYWORD}(.+)`);
+  const match = text.match(r);
   if (match) {
     const [, name] = match;
     return [name.trim(), (match.index ?? 0) + 6];
@@ -58,10 +64,23 @@ const symbolProvider = {
   },
 };
 
-const SUPPORTED_LANGUAGES = ["typescript", "javascript", "typescriptreact", "javascriptreact"];
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.languages.registerDocumentSymbolProvider(SUPPORTED_LANGUAGES, symbolProvider, {
+const registerExtension = (oldDisposable?: vscode.Disposable): vscode.Disposable => {
+  if (oldDisposable) {
+    oldDisposable.dispose();
+  }
+  MARK_KEYWORD = getMarkKeyWord();
+  const disposable = vscode.languages.registerDocumentSymbolProvider(SUPPORTED_LANGUAGES, symbolProvider, {
     label: "MARKS",
   });
+  return disposable;
+};
+
+const SUPPORTED_LANGUAGES = ["typescript", "javascript", "typescriptreact", "javascriptreact"];
+export function activate(context: vscode.ExtensionContext) {
+  let disposable = registerExtension();
   context.subscriptions.push(disposable);
+  vscode.workspace.onDidChangeConfiguration(() => {
+    disposable = registerExtension(disposable);
+    context.subscriptions.push(disposable);
+  });
 }

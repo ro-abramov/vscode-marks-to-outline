@@ -22,15 +22,14 @@ Just add `MARK: -` to your one line comment.
 // MARK: -This is my comment that would be shown in outline
 ```
 
-## Recommendation
+## Configuration
 
-## Changelogs
+```json
+{
+  "marksToOutline.mark": "MARK: -"
+}
+```
 
-### 0.0.2
+## Change log
 
-Add support for react in js and ts.
-Remove trailing white spaces for comments.
-
-### 0.0.1
-
-Add basic support for pragma mark comments for typescript and javascript
+See Change log [here](CHANGELOG.md)
