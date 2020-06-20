@@ -2,7 +2,7 @@
   "name": "marks-to-outline",
   "displayName": "Marks to outline",
   "description": "Adds MARKS symbols to outline view",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "roabramov",
   "contributes": {
     "configuration": {
@@ -13,6 +13,24 @@
           "default": "MARK: -",
           "scope": "resource",
           "description": "The keyword to hint that this line should be added to outline"
+        },
+        "marksToOutline.highlightMarks": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Whether applies highlighting of rows with marks or not"
+        },
+        "marksToOutline.darkColor": {
+          "type": "string",
+          "default": "hsla(0, 100%, 100%, 0.07)",
+          "scope": "resource",
+          "description": "Background color of highlighter line with mark keyword for dark theme"
+        },
+        "marksToOutline.lightColor": {
+          "type": "string",
+          "default": "hsla(0, 0%, 0%, 0.07)",
+          "scope": "resource",
+          "description": "Background color of highlighter line with mark keyword for light theme"
         }
       }
     }

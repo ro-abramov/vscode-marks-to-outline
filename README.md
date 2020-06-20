@@ -4,19 +4,11 @@ Add MARK symbols in comments to outline view.
 
 [![image](/images/example.png)](image)
 
-This package play nicely with awesome "TODO Highlight" package.
-
-Just add to the settings.json
-
-```json
-  "todohighlight.keywords": [
-    { "text": "MARK: -", "color": "inherit", "backgroundColor": "hsla(28, 100%, 35%, 0.2)", "isWholeLine": true }
-  ]
-```
+React hooks are awesome, but what I really don't like about them, is that sometimes it takes some time to scroll to actual render. At first I've created this extension to quickly jump to return. But later I've found myself putting MARKS in other places too. I still think that it is better to split large code blocks into multiple files, and keep them nice and short, but if this is not the case just use MARKS to add logical grouping to code.
 
 ## How To Use
 
-Just add `MARK: -` to your one line comment.
+Add `MARK: -` or your custom keyword to one line comment.
 
 ```javascript
 // MARK: -This is my comment that would be shown in outline
@@ -24,9 +16,12 @@ Just add `MARK: -` to your one line comment.
 
 ## Configuration
 
-```json
+```js
 {
-  "marksToOutline.mark": "MARK: -"
+  "marksToOutline.mark": "MARK: -", // Keyword to look for
+  "marksToOutline.highlightMarks": true, // should highlight lines or not
+  "marksToOutline.darkColor": "hsla(0, 100%, 100%, 0.07)", // higlight color for dark themes
+  "marksToOutline.lightColor": "hsla(0, 0%, 0%, 0.07)" // highlight color for light themes
 }
 ```
 

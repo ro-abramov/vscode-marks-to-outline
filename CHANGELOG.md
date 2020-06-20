@@ -1,3 +1,7 @@
+### 0.0.4 (2020-06-20)
+
+Highlight lines with MARK keywords
+
 ### 0.0.3 (2020-06-13)
 
 Add keyword configuration to settings
