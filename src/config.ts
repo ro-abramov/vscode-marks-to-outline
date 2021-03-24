@@ -5,6 +5,7 @@ const DEFAULT_CONFIG = {
   darkColor: "hsla(0, 100%, 100%, 0.07)",
   lightColor: "hsla(0, 0%, 0%, 0.07)",
   highlightMarks: true,
+  availableLanguages: "*",
 };
 
 type Config = typeof DEFAULT_CONFIG;

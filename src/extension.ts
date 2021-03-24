@@ -15,6 +15,14 @@ interface MakeSymbolFn extends MarkTokens {
 
 let MARK_KEYWORD = Config.get("mark");
 
+async function getListOfActiveLanguages(): Promise<vscode.DocumentSelector> {
+  const langs: string = Config.get("availableLanguages");
+  if (langs === "*") {
+    return await vscode.languages.getLanguages();
+  }
+  return langs.split(",").map((l) => l.trim());
+}
+
 function findMarks(text: string): [string, number, number] | null {
   const r = new RegExp(`${MARK_KEYWORD}(.+)`);
   const match = text.match(r);
@@ -62,26 +70,26 @@ const symbolProvider = {
   },
 };
 
-const registerExtension = (oldDisposable?: vscode.Disposable): vscode.Disposable => {
+const registerExtension = async (oldDisposable?: vscode.Disposable): Promise<vscode.Disposable> => {
   if (oldDisposable) {
     oldDisposable.dispose();
   }
   Config.init();
   Highlighter.init();
   MARK_KEYWORD = Config.get("mark");
+  const SUPPORTED_LANGUAGES = await getListOfActiveLanguages();
   const disposable = vscode.languages.registerDocumentSymbolProvider(SUPPORTED_LANGUAGES, symbolProvider, {
     label: "MARKS",
   });
   return disposable;
 };
 
-const SUPPORTED_LANGUAGES = ["typescript", "javascript", "typescriptreact", "javascriptreact"];
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = registerExtension();
+export async function activate(context: vscode.ExtensionContext) {
+  let disposable = await registerExtension();
   context.subscriptions.push(disposable);
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(() => {
-      disposable = registerExtension(disposable);
+    vscode.workspace.onDidChangeConfiguration(async () => {
+      disposable = await registerExtension(disposable);
       context.subscriptions.push(disposable);
     })
   );
