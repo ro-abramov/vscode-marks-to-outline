@@ -1,3 +1,7 @@
+### 0.0.5 (2021-03-24)
+
+Add setting to configure available languages
+
 ### 0.0.4 (2020-06-20)
 
 Highlight lines with MARK keywords

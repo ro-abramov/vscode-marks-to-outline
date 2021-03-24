@@ -19,6 +19,7 @@ Add `MARK: -` or your custom keyword to one line comment.
 ```js
 {
   "marksToOutline.mark": "MARK: -", // Keyword to look for
+  "marksToOutline.availableLanguages": "*", // * | comma-separated list of language ids
   "marksToOutline.highlightMarks": true, // should highlight lines or not
   "marksToOutline.darkColor": "hsla(0, 100%, 100%, 0.07)", // higlight color for dark themes
   "marksToOutline.lightColor": "hsla(0, 0%, 0%, 0.07)" // highlight color for light themes
