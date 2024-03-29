@@ -8,13 +8,10 @@ export function makeSymbolProvider(marker: Marker, config: Config, highlighter: 
     provideDocumentSymbols(
       document: vscode.TextDocument
     ): vscode.ProviderResult<vscode.SymbolInformation[] | vscode.DocumentSymbol[]> {
-      if (document.lineCount > 5000) {
-        return [];
-      }
       const lineCount = document.lineCount;
       const isSymbolHighlightEnabled = config.get("highlightMarks");
       const ranges: vscode.Range[] = [];
-      const symbols = [];
+      const symbols: Map<string, vscode.DocumentSymbol[]> = new Map();
 
       for (let line = 0; line < lineCount; line++) {
         const token = marker.findMarkerInLine(document, line);
@@ -24,12 +21,13 @@ export function makeSymbolProvider(marker: Marker, config: Config, highlighter: 
         if (isSymbolHighlightEnabled) {
           ranges.push(token.range);
         }
-        symbols.push(marker.makeSymbol({ ...token, document }));
+        const symbol = marker.makeSymbol({ ...token, document });
+        symbols.set(token.groupKey, [...(symbols.get(token.groupKey) ?? []), symbol]);
       }
       if (isSymbolHighlightEnabled) {
         highlighter.highlight(ranges);
       }
-      return symbols;
+      return marker.convertSymbolsToTree(symbols);
     },
   };
 }

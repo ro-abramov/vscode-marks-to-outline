@@ -28,4 +28,9 @@ export class Config {
     }
     return langs.split(",").map((l) => l.trim());
   }
+
+  getMarkKeywords(): string[] {
+    const mark = this.get("mark");
+    return mark.split(",").map((s) => s.trim());
+  }
 }
