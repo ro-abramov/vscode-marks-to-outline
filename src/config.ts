@@ -8,19 +8,24 @@ const DEFAULT_CONFIG = {
   availableLanguages: "*",
 };
 
-type Config = typeof DEFAULT_CONFIG;
+type ConfigOptions = typeof DEFAULT_CONFIG;
+type ConfigKey = keyof ConfigOptions;
 
-let workspaceConfiguration: vscode.WorkspaceConfiguration | undefined;
+export class Config {
+  workspaceConfiguration: vscode.WorkspaceConfiguration;
+  constructor() {
+    this.workspaceConfiguration = vscode.workspace.getConfiguration("marksToOutline");
+  }
 
-function get<T extends keyof Config>(key: T): Config[T] {
-  return workspaceConfiguration?.get(key) ?? DEFAULT_CONFIG[key];
+  get<T extends ConfigKey>(key: T): ConfigOptions[T] {
+    return this.workspaceConfiguration.get(key) ?? DEFAULT_CONFIG[key];
+  }
+
+  async getListOfActiveLanguages(): Promise<vscode.DocumentSelector> {
+    const langs: string = this.get("availableLanguages");
+    if (langs === "*") {
+      return await vscode.languages.getLanguages();
+    }
+    return langs.split(",").map((l) => l.trim());
+  }
 }
-
-function init() {
-  workspaceConfiguration = vscode.workspace.getConfiguration("marksToOutline");
-}
-
-export const Config = {
-  get,
-  init,
-};
